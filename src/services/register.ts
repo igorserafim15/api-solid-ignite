@@ -1,5 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 interface RegisterServiceRequest {
   name: string
@@ -8,7 +9,9 @@ interface RegisterServiceRequest {
 }
 
 export class RegisterService {
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(private usersRepository: UsersRepository) {
+    //
+  }
 
   async execute(body: RegisterServiceRequest) {
     const userEmailAlreadyExists = await this.usersRepository.findByEmail(
@@ -16,7 +19,7 @@ export class RegisterService {
     )
 
     if (userEmailAlreadyExists) {
-      throw new Error('E-mail already exists.')
+      throw new UserAlreadyExistsError()
     }
 
     const password_hash = await hash(body.password, 6)
