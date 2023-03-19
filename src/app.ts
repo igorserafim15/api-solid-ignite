@@ -15,7 +15,7 @@ app.setErrorHandler((error, _, res) => {
     })
   }
 
-  if (env.NODE_ENV !== 'PROD') {
+  if (env.NODE_ENV !== 'production') {
     console.error('❌ Error log:', error)
   }
 
